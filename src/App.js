@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ipfsAPI from 'ipfs-api'
 
 var ipfs = ipfsAPI('localhost', '5001')
+const string_to_use = "Hello World From Webpack"
 
 export default class App extends Component {
 	constructor(props) {
@@ -27,10 +28,14 @@ export default class App extends Component {
 				protocol_version: res.ProtocolVersion
 			})
 		})
-		ipfs.add([new Buffer("Hello World")], (err, res) => {
+		ipfs.add([new Buffer(string_to_use)], (err, res) => {
 			this.setState({added_file_hash: res.Hash})
 			ipfs.cat(res.Hash, (err, res) => {
 				this.setState({added_file_contents: res})
+			})
+			ipfs.dht.findprovs(res.Hash, (err, res) => {
+				console.log('found provs!')
+				console.log(err, res)
 			})
 		})
 	}
