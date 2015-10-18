@@ -10,7 +10,9 @@ export default class App extends Component {
 		this.state = {
 			id: null,
 			version: null,
-			protocol_version: null
+			protocol_version: null,
+			added_file_hash: null,
+			added_file_contents: null
 		}
 	}
 	componentDidMount() {
@@ -25,6 +27,12 @@ export default class App extends Component {
 				protocol_version: res.ProtocolVersion
 			})
 		})
+		ipfs.add([new Buffer("Hello World")], (err, res) => {
+			this.setState({added_file_hash: res.Hash})
+			ipfs.cat(res.Hash, (err, res) => {
+				this.setState({added_file_contents: res})
+			})
+		})
 	}
   render() {
     return (
@@ -33,6 +41,16 @@ export default class App extends Component {
 				<p>Your ID is <strong>{this.state.id}</strong></p>
 				<p>Your IPFS version is <strong>{this.state.version}</strong></p>
 				<p>Your IPFS protocol version is <strong>{this.state.protocol_version}</strong></p>
+				<div>
+					<div>
+						Added a file!<br/>
+						{this.state.added_file_hash}
+					</div>
+					<div>
+						Contents of this file:<br/>
+						{this.state.added_file_contents}
+					</div>
+				</div>
 			</div>
     );
   }
