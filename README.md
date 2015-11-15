@@ -9,6 +9,6 @@ Take a look here for the changes: https://github.com/VictorBjelkholm/webpack-nod
 
 ### To run
 
-Start the deamon with `API_ORIGIN="*" ipfs daemon`
+Start the daemon with `API_ORIGIN="*" ipfs daemon`
 
-Run `npm install` and then `npm run` and the application should be running on `http://localhost:3000`
+Run `npm install` and then `npm start` and the application should be running on `http://localhost:3000`
