@@ -23,7 +23,9 @@ module.exports = {
       include: path.join(__dirname, 'src')
     },{ test: /\.json$/, loader: "json-loader" }]
   },
-	node: {
-		fs: 'empty'
-	}
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 };
