@@ -23,17 +23,24 @@ export default class App extends Component {
 				return
 			}
 			this.setState({
-				id: res.ID,
-				version: res.AgentVersion,
-				protocol_version: res.ProtocolVersion
+				id: res.id,
+				version: res.agentVersion,
+				protocol_version: res.protocolVersion
 			})
 		})
 		ipfs.add([new Buffer(string_to_use)], (err, res) => {
-			this.setState({added_file_hash: res.Hash})
-			ipfs.cat(res.Hash, (err, res) => {
-				this.setState({added_file_contents: res})
+      const hash = res[0].hash
+			this.setState({added_file_hash: hash})
+			ipfs.cat(hash, (err, res) => {
+        let data = ''
+        res.on('data', (d) => {
+          data = data + d
+        })
+        res.on('end', () => {
+          this.setState({added_file_contents: data})
+        })
 			})
-			ipfs.dht.findprovs(res.Hash, (err, res) => {
+			ipfs.dht.findprovs(hash, (err, res) => {
 				console.log('found provs!')
 				console.log(err, res)
 			})
